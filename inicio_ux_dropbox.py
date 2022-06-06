@@ -209,7 +209,7 @@ def main():
 
 
 if __name__ == '__main__':
-    # display = Display(size=(1920, 1080))
-    # display.start()
+    display = Display(size=(1920, 1080))
+    display.start()
     main()
-    # display.stop()
+    display.stop()
