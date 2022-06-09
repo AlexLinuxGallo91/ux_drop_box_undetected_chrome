@@ -15,7 +15,7 @@ docker build -t dropbox_ux .
 Una vez ya creado el contenedor, se crea/ejecuta el contenedor con el siguiente comando:
 
 ```sh
-docker run -d --restart unless-stopped --name dropbox_ux dropbox_ux
+docker run -d --restart unless-stopped --name -p 7900:7900 dropbox_ux dropbox_ux
 ```
 
 Teniendo el contenedor arriba, podemos ejecutar de manera simplificada el script, pasando los siguientes argumentos en formato json
