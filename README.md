@@ -1,13 +1,24 @@
 # Script experiencia de usuario en Drop Box
 
 Script desarrollado en lenguaje Python con el fin de simular una experiencia de usuario por medio del uso del framework
-Selenium. Como dato importante, solamente se ha probado en dos navegadores y por los cuales recomiendo solamente:
-**Google Chrome/Chromium y Mozilla Firefox**.
+Selenium. Como dato importante, solamente se ha probado en el navegador:
+**Google Chrome/Chromium**.
 
 ## Comandos de ejecución
 
-Una vez instalado el proyecto con todas las dependencias se necesita pasar como argumento una cadena json con cada una
-de las siguientes propiedades:
+Se recomienda ejecutarlo desde un contenedor docker, para ello dentro del repositorio se encuentra el Dockerfile con las dependencias necesarias. Para ello solamente contruya la imagen con el siguiente comando:
+
+```sh
+docker build -t dropbox_ux .
+```
+
+Una vez ya creado el contenedor, se crea/ejecuta el contenedor con el siguiente comando:
+
+```sh
+docker run -d --restart unless-stopped --name dropbox_ux dropbox_ux /app/env/bin/python3 main.py
+```
+
+Teniendo el contenedor arriba, podemos ejecutar de manera simplificada el script, pasando los siguientes argumentos en formato json
 
 ```json
 {
@@ -21,22 +32,15 @@ Cada una de las propiedades en el json son vitales para la ejecucion del script,
 para poder acceder a la plataforma de drop box por medio del acceso con google. En cuanto a la propiedad "pathImage" en
 el directorio en donde se almacenaran todas las descargas realizadas en el script.
 
-A continuacion se muestran ejemplos de como se ejecutan en distintos entornos ya sea en un ambiente de test/produccion o
-en cualquier IDE:
+**Ejecucion de script desde el contenedor Docker:**
 
-**IDE Pycharm en Windows:**
-
-```
-"{\"user\":\"correodummy@gmail.com\",
-\"password\":\"soyunpassword\",
-\"pathImage\":\"C:\\Users\\dummy\\Desktop\\img_25mb.png\"}"
-```
-
-**Ambiente Linux:**
+A continuacion se muestra el ejemplo de ejecucion de la experiencia de usuario:
 
 ```bash
-python3 '{"user":"dummy@gmail.com",
-"password":"dummy","pathImage":
-"/home/dummy/images/img_25mb.png"}'
+docker run -it dropbox_ux /app/env/bin/python3 inicio_ux_dropbox.py '{"user":"dummy@gmail.com", "password":"dummy","pathImage": "/home/dummy/images/img_25mb.png"}'
 ```
+
+
+
+
 

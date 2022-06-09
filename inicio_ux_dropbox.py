@@ -84,14 +84,14 @@ def verificacion_archivo_config(archivo_config: configparser.ConfigParser):
     validacion_total = True
 
     bool_ruta = archivo_config.has_option('Driver', 'ruta')
-    bool_web_driver = archivo_config.has_option('Driver', 'driverPorUtilizar')
+    bool_using_webdriver = archivo_config.has_option('Driver', 'using_webdriver')
     bool_folder_descargas = archivo_config.has_option('Driver', 'folder_descargas')
     bool_headless = archivo_config.has_option('Driver', 'headless')
 
     if not bool_ruta:
         print('Favor de establecer el path del webdriver a utilizar dentro del archivo config.ini')
         validacion_total = False
-    elif not bool_web_driver:
+    elif not bool_using_webdriver:
         print('Favor de establecer el tipo/nombre del webdriver a utilizar dentro del archivo config.ini')
         validacion_total = False
     elif not bool_folder_descargas:
