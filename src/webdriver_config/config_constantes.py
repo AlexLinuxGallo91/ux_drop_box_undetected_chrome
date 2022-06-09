@@ -1,9 +1,5 @@
 DEV_NULL = '/dev/null'
 
-# Tipos de web driver por configurar
-CHROME = 'chrome'
-FIREFOX = 'firefox'
-
 # Mensajes informativos
 MSG_INFO_CONFIGURACION_DRIVER = 'Configurando driver chrome'
 MSG_INFO_INICIO_CONFIGURACION_DRIVER = 'Configurando driver: {}'

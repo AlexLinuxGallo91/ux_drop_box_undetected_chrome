@@ -165,10 +165,18 @@ def main():
 
     if not verificacion_archivo_config(archivo_config):
         sys.exit()
+    
+    # valida si se ejecutara con xvbf
+    running_in_xbbf_mode = archivo_config.getboolean('Driver', 'running_with_xvbf')
+    display = None
+
+    if running_in_xbbf_mode:
+        display = Display(size=(1920, 1080))
+        display.start()
 
     param_archivo_config_path_web_driver = archivo_config.get('Driver', 'ruta')
-    param_archivo_config_web_driver_por_usar = archivo_config.get('Driver', 'driverPorUtilizar')
     param_archivo_config_directorio_descargas = archivo_config.get('Driver', 'folder_descargas')
+    param_archivo_config_using_webdriver = archivo_config.getboolean('Driver', 'using_webdriver')
 
     # verificacion de argumentos dentro de la ejecucion del script
     if not verificacion_script_argumentos():
@@ -191,8 +199,8 @@ def main():
 
     # se establece la configuracion del webdriver
     webdriver_config = ConfiguracionWebDriver(param_archivo_config_path_web_driver,
-                                              param_archivo_config_web_driver_por_usar,
-                                              param_archivo_config_directorio_descargas)
+                                              param_archivo_config_directorio_descargas,
+                                              param_archivo_config_using_webdriver)
 
     # se establece y obtiene el webdriver/navegar para la ejecucion de las pruebas UX en claro drive
     webdriver_ux_test = webdriver_config.configurar_obtencion_web_driver()
@@ -202,6 +210,9 @@ def main():
 
     # ejecuta cada uno de los pasos de la UX en Drop Box
     resultado_json_evaluacines_ux_drop_box = ejecucion_validaciones_drop_box(webdriver_ux_test, argumento_script_json)
+    
+    if running_in_xbbf_mode:
+        display.stop()
 
     UtilsMain.eliminar_directorio_con_contenido(config_constantes.PATH_CARPETA_DESCARGA)
 
@@ -209,7 +220,4 @@ def main():
 
 
 if __name__ == '__main__':
-    display = Display(size=(1920, 1080))
-    display.start()
     main()
-    display.stop()
