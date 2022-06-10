@@ -7,7 +7,8 @@ RUN apt-get install -y vim git python3-pip
 RUN mkdir -p /app/downloads
 WORKDIR /app
 COPY . .
-RUN chmod 777 /app
+RUN chmod 777 -R /app
+RUN chmod 777 -R /app/downloads
 
 RUN sudo apt-get install -y python3-pip
 RUN sudo pip3 install virtualenv

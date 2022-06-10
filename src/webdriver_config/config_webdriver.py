@@ -29,7 +29,6 @@ class ConfiguracionWebDriver:
         opciones_chrome.add_argument('window-size=1920x1080')
         opciones_chrome.add_argument('--no-sandbox')
         opciones_chrome.add_argument('--enable-sync')
-        opciones_chrome.add_argument('--profile-directory=Profile 1')
 
         # establece el modo headless, esto dependiendo de la opcion que se tenga en el archivo config.ini
         if modo_headless:

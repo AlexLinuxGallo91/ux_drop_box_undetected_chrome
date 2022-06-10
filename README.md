@@ -12,12 +12,6 @@ Se recomienda ejecutarlo desde un contenedor docker, para ello dentro del reposi
 docker build -t dropbox_ux .
 ```
 
-Una vez ya creado el contenedor, se crea/ejecuta el contenedor con el siguiente comando:
-
-```sh
-docker run -d --restart unless-stopped --name -p 7900:7900 dropbox_ux dropbox_ux
-```
-
 Teniendo el contenedor arriba, podemos ejecutar de manera simplificada el script, pasando los siguientes argumentos en formato json
 
 ```json
@@ -37,7 +31,7 @@ el directorio en donde se almacenaran todas las descargas realizadas en el scrip
 A continuacion se muestra el ejemplo de ejecucion de la experiencia de usuario:
 
 ```bash
-docker exec -it dropbox_ux /app/env/bin/python3 inicio_ux_dropbox.py '{"user":"dummy@gmail.com", "password":"dummy","pathImage": "/app/img25mb.png"}'
+docker run -it --shm-size="2g" --user seluser -p 7900:7900 dropbox /app/env/bin/python3 inicio_ux_dropbox.py '{"user":"dummy@gmail.com", "password":"dummy","pathImage": "/app/img25mb.png"}'
 ```
 
 
