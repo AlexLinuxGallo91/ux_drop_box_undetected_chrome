@@ -31,7 +31,7 @@ el directorio en donde se almacenaran todas las descargas realizadas en el scrip
 A continuacion se muestra el ejemplo de ejecucion de la experiencia de usuario:
 
 ```bash
-docker run -it --shm-size="2g" --user seluser -p 7900:7900 dropbox /app/env/bin/python3 inicio_ux_dropbox.py '{"user":"dummy@gmail.com", "password":"dummy","pathImage": "/app/img25mb.png"}'
+docker run -it --shm-size="2g" --user seluser -p 7900:7900 dropbox_ux /app/env/bin/python3 inicio_ux_dropbox.py '{"user":"dummy@gmail.com", "password":"dummy","pathImage": "/app/img25mb.png"}'
 ```
 
 
