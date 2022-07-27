@@ -215,15 +215,6 @@ class EvaluacionesDropBoxDriveSteps:
             ValidacionesHtml.verificar_mensaje_de_carga_exitosa_de_archivo(
                 webdriver_test_ux, nombre_archivo_con_ext, const.TIMEOUT_STEP_CARGA_ARCHIVO_VERIFICACION_CARGA_EXITOSA)
 
-            #ValidacionesHtml.cerrar_mensaje_carga_completa(webdriver_test_ux)
-
-            # btn_cerrar_progreso_carga = HtmlActions.webdriver_wait_element_to_be_clickable(
-            #     webdriver_test_ux, const.TIMEOUT_STEP_CARGA_ARCHIVO_BOTON_CIERRE_PROGRESO_CARGA,
-            #     xpath=const.HTML_STEP_CARGAR_ARCHIVO_XPATH_BTN_CERRAR_PROGRESO_CARGA)
-            #
-            # HtmlActions.click_html_element(
-            #     btn_cerrar_progreso_carga, xpath=const.HTML_STEP_CARGAR_ARCHIVO_XPATH_BTN_CERRAR_PROGRESO_CARGA)
-
             json_eval = UtilsEvaluaciones.establecer_output_status_step(
                 json_eval, 2, 0, True, const.MSG_OUTPUT_CARGA_ARCHIVO_EXITOSO)
 
@@ -364,9 +355,7 @@ class EvaluacionesDropBoxDriveSteps:
             action = ActionChains(webdriver_test_ux)
             action.send_keys(Keys.TAB).send_keys(Keys.TAB).send_keys(Keys.TAB).send_keys(Keys.ENTER).perform()
 
-            HtmlActions.webdriver_wait_presence_of_element_located(
-                webdriver_test_ux, const.TIMEOUT_STEP_ELIMINACION_ARCHIVO_MENSAJE_ELIMINACION_ELEMENTO,
-                xpath=const.HTML_STEP_ELIMINAR_ARCHIVO_XPATH_MSG_ELIMINACION_EXITOSA)
+            ValidacionesHtml.validacion_eliminacion_fichero(webdriver_test_ux, 30)
 
             json_eval = UtilsEvaluaciones.establecer_output_status_step(
                 json_eval, 4, 0, True, const.MSG_OUTPUT_BORRADO_ARCHIVO_EXITOSO)

@@ -127,7 +127,7 @@ class ValidacionesHtml():
         segundos_transcurridos = 0
 
         while segundos_transcurridos < numero_de_seg_en_espera:
-            msg_1 = msg_2 = ''
+            msg_1 = msg_2 = msg_3 = ''
 
             list_msg_ricksnackbar = web_driver.find_elements(
                 By.CLASS_NAME, 'dig-RichSnackbar-message')
@@ -135,11 +135,17 @@ class ValidacionesHtml():
             list_msg_snackbar = web_driver.find_elements(
                 By.CLASS_NAME, 'dig-Snackbar-message')
 
+            list_msg_exp_richsnackbar = web_driver.find_elements(
+                By.CLASS_NAME, 'exp-dig-RichSnackbar-message')
+
             if len(list_msg_ricksnackbar) > 0:
                 msg_1 = list_msg_ricksnackbar[0].get_attribute('innerText')
 
             if len(list_msg_snackbar) > 0:
                 msg_2 = list_msg_snackbar[0].get_attribute('innerText')
+
+            if len(list_msg_exp_richsnackbar) > 0:
+                msg_3 = list_msg_exp_richsnackbar[0].get_attribute('innerText')
 
             val_1 = re.search('^Se cargaron*', msg_1) or \
                 msg_1 == 'Se carg\u00F3 {}.'.format(nombre_archivo_a_cargar)
@@ -147,7 +153,10 @@ class ValidacionesHtml():
             val_2 = re.search('^Se cargaron*', msg_2) or \
                 msg_2 == 'Se carg\u00F3 {}.'.format(nombre_archivo_a_cargar)
 
-            if val_1 or val_2:
+            val_3 = re.search('^Se cargaron*', msg_3) or \
+                msg_3 == 'Se carg\u00F3 {}.'.format(nombre_archivo_a_cargar)
+
+            if val_1 or val_2 or val_3:
 
                 # realiza un clic al boton de cerrar
                 ValidacionesHtml.cerrar_mensaje_carga_completa(web_driver, 1)
@@ -229,3 +238,67 @@ class ValidacionesHtml():
 
             seg_transcurridos += 1
             time.sleep(1)
+
+    @staticmethod
+    def validacion_eliminacion_fichero(web_driver: WebDriver,
+                                       tiempo_de_espera: int = 30):
+
+        # validacion de elimiinacion de fichero
+
+        tiempo_transcurrido_en_segundos = 0
+        se_localizo_elemento = False
+
+        while tiempo_transcurrido_en_segundos < tiempo_de_espera:
+            try:
+                web_driver.find_element(By.CLASS_NAME, 'dig-Snackbar-message')
+                se_localizo_elemento = True
+                break
+            except NoSuchElementException:
+                se_localizo_elemento = False
+
+            time.sleep(1)
+            tiempo_transcurrido_en_segundos += 1
+
+        if not se_localizo_elemento:
+            e = TimeoutException()
+            e.msg = webdriver_actions_constantes.WEBDRIVER_WAIT_TIMEOUT_EXCEPTION.format(
+                tiempo_de_espera,
+                'div con la clase css dig-Snackbar-message.',
+                '')
+            raise e
+
+    @staticmethod
+    def validacion_eliminacion_fichero(web_driver: WebDriver,
+                                           tiempo_de_espera: int = 30):
+
+        # validacion de elimiinacion de fichero
+        tiempo_transcurrido_en_segundos = 0
+        se_localizo_elemento = False
+
+        while tiempo_transcurrido_en_segundos < tiempo_de_espera:
+            try:
+                div_msg = web_driver.find_element(By.CLASS_NAME, 'dig-Snackbar-message')
+
+                msg_eliminacion = div_msg.get_attribute('innerText').strip()
+
+                if msg_eliminacion == 'Se elimin\u00F3 1 elemento.' \
+                        or re.search('^Se elimin\u00F3*', msg_eliminacion):
+                    se_localizo_elemento = True
+                    break
+
+            except NoSuchElementException:
+                se_localizo_elemento = False
+
+            time.sleep(1)
+            tiempo_transcurrido_en_segundos += 1
+
+        if not se_localizo_elemento:
+            e = TimeoutException()
+            e.msg = webdriver_actions_constantes.WEBDRIVER_WAIT_TIMEOUT_EXCEPTION.format(
+                tiempo_de_espera,
+                'div con la clase css dig-Snackbar-message.',
+                '')
+            raise e
+
+
+
