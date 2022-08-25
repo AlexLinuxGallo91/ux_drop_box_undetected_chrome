@@ -5,6 +5,7 @@ from selenium.common.exceptions import ElementNotInteractableException
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import WebDriverException
+from selenium.common.exceptions import JavascriptException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
@@ -233,8 +234,23 @@ class ValidacionesHtml():
                 lista_de_input_file[0].send_keys(path_archivo_por_cargar)
 
             # se da clic en el boton 'Cargar Archivos'
-            web_driver.execute_script(
-                "document.querySelector('.uee-AppActionsView-SecondaryActionMenu-text-upload-file').click()")
+            try:
+                btn_cargar = web_driver.find_element_by_xpath('//span[text()="Cargar"]')
+                btn_cargar.click()
+
+                btn_archivos = web_driver.find_element_by_xpath(
+                    '//div[@class="dig-Menu-row-title"][text()="Archivos"]')
+                btn_archivos.click()
+            except ElementNotInteractableException as e:
+                pass
+            except TimeoutException as e:
+                pass
+            except ElementClickInterceptedException as e:
+                pass
+            except NoSuchElementException as e:
+                pass
+            except JavascriptException as e:
+                pass
 
             seg_transcurridos += 1
             time.sleep(1)
