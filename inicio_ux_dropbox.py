@@ -24,55 +24,30 @@ def verificacion_estatus_final(json_evaluacion):
     val_paso_6 = True if json_evaluacion["steps"][5]["status"] == jsonConst.SUCCESS else False
 
     eval_final = val_paso_1 and val_paso_2 and val_paso_3 and \
-                 val_paso_4 and val_paso_5 and val_paso_6
+        val_paso_4 and val_paso_5 and val_paso_6
 
     return jsonConst.SUCCESS if eval_final else jsonConst.FAILED
 
 
 def verificacion_script_argumento_json(argumento_script_json):
     """
-
     :param argumento_script_json:
     :return:
     """
-    if not FormatUtils.cadena_a_json_valido(argumento_script_json):
+    if not FormatUtils.verificar_keys_json(argumento_script_json):
         return False
 
-    json_argumento_formateado = json.loads(argumento_script_json)
-
-    if not FormatUtils.verificar_keys_json(json_argumento_formateado):
-        return False
-
-    elif not path.exists(json_argumento_formateado['pathImage']):
+    elif not path.exists(argumento_script_json['pathImage']):
         print('La imagen/archivo por cargar dentro de la plataforma Claro Drive no fue localizado dentro del server, '
               'favor de verificar nuevamente el path de la imagen/archivo.')
         return False
 
-    elif not path.isfile(json_argumento_formateado['pathImage']):
+    elif not path.isfile(argumento_script_json['pathImage']):
         print('El path de la imagen/archivo establecida, no corresponde a un archivo o imagen valida, favor de '
               'verificar nuevamente el path del archivo.')
         return False
 
     return True
-
-
-def verificacion_script_argumentos():
-    """
-    Verifica que dentro de la ejecucion del script se haya establecido el parametro principal en formato JSON. De ser
-    asi la funcion retornara True, en caso contrario retorna False
-
-    :return:
-    """
-    validacion_completa = True
-
-    argumentos_script = sys.argv[1:]
-
-    if len(argumentos_script) == 0:
-        print('No se encontraron parametros en la llamada del Script. Favor de establecer el parametro principal en'
-              'formato JSON para la ejecucion correcta del Script.')
-        validacion_completa = False
-
-    return validacion_completa
 
 def verificacion_archivo_config(archivo_config: configparser.ConfigParser):
     """
@@ -84,8 +59,10 @@ def verificacion_archivo_config(archivo_config: configparser.ConfigParser):
     validacion_total = True
 
     bool_ruta = archivo_config.has_option('Driver', 'ruta')
-    bool_using_webdriver = archivo_config.has_option('Driver', 'using_webdriver')
-    bool_folder_descargas = archivo_config.has_option('Driver', 'folder_descargas')
+    bool_using_webdriver = archivo_config.has_option(
+        'Driver', 'using_webdriver')
+    bool_folder_descargas = archivo_config.has_option(
+        'Driver', 'folder_descargas')
     bool_headless = archivo_config.has_option('Driver', 'headless')
 
     if not bool_ruta:
@@ -106,9 +83,12 @@ def verificacion_archivo_config(archivo_config: configparser.ConfigParser):
 
 def ejecucion_validaciones_drop_box(webdriver, argumento_script_json):
 
-    nombre_de_imagen_sin_extension = Path(argumento_script_json['pathImage']).stem
-    nombre_de_imagen_con_extension = path.basename(argumento_script_json['pathImage'])
-    config_constantes.NOMBRE_IMAGEN_POR_CARGAR_CON_EXTENSION = path.basename(argumento_script_json['pathImage'])
+    nombre_de_imagen_sin_extension = Path(
+        argumento_script_json['pathImage']).stem
+    nombre_de_imagen_con_extension = path.basename(
+        argumento_script_json['pathImage'])
+    config_constantes.NOMBRE_IMAGEN_POR_CARGAR_CON_EXTENSION = path.basename(
+        argumento_script_json['pathImage'])
     archivo_config = FormatUtils.lector_archivo_ini()
     url_login = archivo_config.get('Dropbox_config', 'url_login')
 
@@ -139,13 +119,15 @@ def ejecucion_validaciones_drop_box(webdriver, argumento_script_json):
     json_evaluacion_drop_box = evaluaciones_steps_drop_box.cerrar_sesion_dropbox(
         webdriver, json_evaluacion_drop_box)
 
-    tiempo_final_ejecucion_prueba = Temporizador.obtener_tiempo_timer() - tiempo_inicial_ejecucion_prueba
+    tiempo_final_ejecucion_prueba = Temporizador.obtener_tiempo_timer() - \
+        tiempo_inicial_ejecucion_prueba
     fecha_prueba_final = Temporizador.obtener_fecha_tiempo_actual()
 
     json_evaluacion_drop_box['start'] = fecha_prueba_inicial
     json_evaluacion_drop_box['end'] = fecha_prueba_final
     json_evaluacion_drop_box['time'] = tiempo_final_ejecucion_prueba
-    json_evaluacion_drop_box['status'] = verificacion_estatus_final(json_evaluacion_drop_box)
+    json_evaluacion_drop_box['status'] = verificacion_estatus_final(
+        json_evaluacion_drop_box)
 
     json_padre = {}
     json_padre.update({'body': json_evaluacion_drop_box})
@@ -165,9 +147,10 @@ def main():
 
     if not verificacion_archivo_config(archivo_config):
         sys.exit()
-    
+
     # valida si se ejecutara con xvbf
-    running_in_xbbf_mode = archivo_config.getboolean('Driver', 'running_with_xvbf')
+    running_in_xbbf_mode = archivo_config.getboolean(
+        'Driver', 'running_with_xvbf')
     display = None
 
     if running_in_xbbf_mode:
@@ -175,21 +158,19 @@ def main():
         display.start()
 
     param_archivo_config_path_web_driver = archivo_config.get('Driver', 'ruta')
-    param_archivo_config_directorio_descargas = archivo_config.get('Driver', 'folder_descargas')
-    param_archivo_config_using_webdriver = archivo_config.getboolean('Driver', 'using_webdriver')
+    param_archivo_config_directorio_descargas = archivo_config.get(
+        'Driver', 'folder_descargas')
+    param_archivo_config_using_webdriver = archivo_config.getboolean(
+        'Driver', 'using_webdriver')
 
-    # verificacion de argumentos dentro de la ejecucion del script
-    if not verificacion_script_argumentos():
-        sys.exit()
+    argumento_script_json = {
+        'pathImage': archivo_config.get('path_and_credentials', 'path_descargas'),
+        'user': archivo_config.get('path_and_credentials', 'usuario'),
+        'password': archivo_config.get('path_and_credentials', 'password')}
 
-    argumentos_script = sys.argv[1:]
-    argumento_script_json = argumentos_script[0]
-
-    # verifica el formato del argumento JSON y obtiene cada uno de los parametros
+    # # verifica el formato del argumento JSON y obtiene cada uno de los parametros
     if not verificacion_script_argumento_json(argumento_script_json):
         sys.exit()
-
-    argumento_script_json = json.loads(argumento_script_json)
 
     # establece la carpeta de descarga dinamica (donde se descargara la imagen desde el portal de claro drive)
     config_constantes.PATH_CARPETA_DESCARGA = UtilsMain.generar_carpeta_descarga_dinamica(
@@ -209,12 +190,14 @@ def main():
     webdriver_ux_test.maximize_window()
 
     # ejecuta cada uno de los pasos de la UX en Drop Box
-    resultado_json_evaluacines_ux_drop_box = ejecucion_validaciones_drop_box(webdriver_ux_test, argumento_script_json)
-    
+    resultado_json_evaluacines_ux_drop_box = ejecucion_validaciones_drop_box(
+        webdriver_ux_test, argumento_script_json)
+
     if running_in_xbbf_mode:
         display.stop()
 
-    UtilsMain.eliminar_directorio_con_contenido(config_constantes.PATH_CARPETA_DESCARGA)
+    UtilsMain.eliminar_directorio_con_contenido(
+        config_constantes.PATH_CARPETA_DESCARGA)
 
     print(json.dumps(resultado_json_evaluacines_ux_drop_box))
 

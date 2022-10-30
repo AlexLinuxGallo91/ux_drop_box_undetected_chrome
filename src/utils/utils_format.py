@@ -6,16 +6,6 @@ import json
 class FormatUtils:
 
     @staticmethod
-    def cadena_a_json_valido(cadena=''):
-        try:
-            obj_json = json.loads(cadena)
-            return True
-        except ValueError as e:
-            print('El texto "{}" no es un objeto JSON valido: {}, se omite experiencia de usuario Drop Box'.format(
-                cadena, e))
-            return False
-
-    @staticmethod
     def truncar_float_cadena(cifra_decimal):
         num = cifra_decimal
 

@@ -27,17 +27,24 @@ MSG_OUTPUT_CIERRE_SESION_SIN_EXITO = 'No fue posible realizar el cierre de sesio
 MSG_INICIO_SESION_FALLIDA_POR_INGRESO_DE_PAGINA = 'No fue posible iniciar sesion dentro de la plataforma Drop Box. ' \
                                                   'Ingreso a la pagina principal de la plataforma Drop box sin exito.'
 
-MSG_CARGA_ARCHIVO_FALLIDA_POR_INICIO_DE_SESION = 'No fue posible cargar el archivo dentro de la plataforma Drop ' \
-                                                  'Box. Inicio de sesion dentro de la plataforma sin exito.'
+MSG_CARGA_ARCHIVO_FALLIDA_POR_INICIO_DE_SESION = \
+    'No fue posible cargar el archivo dentro de la plataforma Drop ' \
+    'Box. Inicio de sesion dentro de la plataforma sin exito.'
 
-MSG_DESCARGA_ARCHIVO_FALLIDA_POR_CARGA_ARCHIVO_FALLIDA = 'No fue posible descargar el archivo dentro de la ' \
-    'plataforma Drop Box. Carga de archivo dentro de la plataforma sin exito.'
+MSG_DESCARGA_ARCHIVO_FALLIDA_POR_CARGA_ARCHIVO_FALLIDA = \
+    'No fue posible descargar el archivo dentro de la ' \
+    'plataforma Drop Box. Carga de archivo dentro de la ' \
+    'plataforma sin exito.'
 
-MSG_ELIMINACION_ARCHIVO_FALLIDA_POR_CARGA_ARCHIVO_FALLIDA = 'No fue posible eliminar el archivo dentro de la ' \
-    'plataforma Drop Box. Carga de archivo dentro de la plataforma sin exito.'
+MSG_ELIMINACION_ARCHIVO_FALLIDA_POR_CARGA_ARCHIVO_FALLIDA = \
+    'No fue posible eliminar el archivo dentro de la ' \
+    'plataforma Drop Box. Carga de archivo dentro de la ' \
+    'plataforma sin exito.'
 
-MSG_CIERRE_SESION_FALLIDA_POR_INICIO_DE_SESION = 'No fue posible realizar el cierre de sesion dentro de la ' \
-    'plataforma Drop Box. Inicio de sesion dentro de la plataforma sin exito.'
+MSG_CIERRE_SESION_FALLIDA_POR_INICIO_DE_SESION = \
+    'No fue posible realizar el cierre de sesion dentro de la ' \
+    'plataforma Drop Box. Inicio de sesion dentro de la plataforma ' \
+    'sin exito.'
 
 # identificadores html de cada elemento por localizar
 
@@ -50,38 +57,40 @@ HTML_STEP_INGRESO_PAGINA_NAME_INPUT_LOGIN_PASSWORD = 'login_password'
 
 # STEP INICIO SESION DROPBOX
 HTML_STEP_INICIO_SESION_XPATH_BTN_INICIO_SESION = '//div[@class="login-form-container__google-div"]'
-HTML_STEP_INICIO_SESION_ID_VIEW_CONTAINER = 'view_container'
+HTML_STEP_INICIO_SESION_ID_INITIAL_VIEW = 'initialView'
 HTML_STEP_INICIO_SESION_ID_INPUT_EMAIL = 'identifierId'
 HTML_STEP_INICIO_SESION_ID_BTN_NEXT = 'identifierNext'
 HTML_STEP_INICIO_SESION_ID_DIV_PASSWORD_GMAIL = 'password'
-HTML_STEP_INICIO_SESION_NAME_INPUT_PASSWORD_GMAIL = 'password'
+HTML_STEP_INICIO_SESION_NAME_INPUT_PASSWORD_GMAIL = 'Passwd'
 HTML_STEP_INICIO_SESION_ID_BTN_INICIO_DE_SESION = 'passwordNext'
 HTML_STEP_INICIO_SESION_CLASS_NAME_DIV_MAESTRO_PORTAL = 'maestro-portal'
 
 # STEP CARGAR ARCHIVO DROPBOX
 HTML_STEP_CARGAR_ARCHIVO_URL_ROLE_PERSONAL = 'https://www.dropbox.com/h?role=personal'
-HTML_STEP_CARGAR_ARCHIVO_CLASS_NAME_FOOTER = 'dig-Modal-footer'
+HTML_STEP_CARGAR_ARCHIVO_ID_MAESTRO_CONTENT_PORTAL = 'maestro-content-portal'
 HTML_STEP_CARGAR_ARCHIVO_CLASS_NAME_BTN_CARGA = 'dig-Button--primary'
 HTML_STEP_CARGAR_ARCHIVO_XPATH_BTN_CERRAR_PROGRESO_CARGA = '//span[@class="dig-Button-content"][text()="Cerrar"]'
+HTML_STEP_CARGAR_ARCHIVO_XPATH_BTN_FILES = '//div[@class="dig-Menu-row-title"][text()="Files"]'
+HTML_STEP_CARGAR_ARCHIVO_CLASS_NAME_BTN_UPLOAD = 'dig-Modal-footer'
 
 # STEP DESCARGA ARCHIVO DROPBOX
 HTML_STEP_DESCARGA_ARCHIVO_CLASS_NAME_SEARCH_BAR = 'dig-GlobalHeader-Search__input'
 HTML_STEP_DESCARGA_ARCHIVO_XPATH_ARCHIVO_POR_DESCARGAR = '//tr[@data-filename="{}"]'
 HTML_STEP_DESCARGA_ARCHIVO_CLASS_NAME_CHECKBOX = 'brws-checkbox-cell'
 HTML_STEP_DESCARGA_ARCHIVO_XPATH_BTN_MAS_ACCIONES = '//button[@data-testid="action-bar-overflow"]'
-HTML_STEP_DESCARGA_ARCHIVO_XPATH_BTN_DESCARGAR = '//div[@class="dig-Menu-row-title"][text()="Descargar"]'
+HTML_STEP_DESCARGA_ARCHIVO_XPATH_BTN_DESCARGAR = '//div[@class="dig-Menu-row-title"][text()="Download"]'
 
 # STEP ELIMINAR ARCHIVO DROPBOX
 HTML_STEP_ELIMINAR_ARCHIVO_XPATH_ARCHIVO_POR_ELIMINAR = '//tr[@data-filename="{}"]'
 HTML_STEP_ELIMINAR_ARCHIVO_XPATH_BTN_MAS_ACCIONES = '//button[@data-testid="action-bar-overflow"]'
-HTML_STEP_ELIMINAR_ARCHIVO_XPATH_BTN_ELIMINAR = '//div[@class="dig-Menu-row-title"][text()="Eliminar"]'
+HTML_STEP_ELIMINAR_ARCHIVO_XPATH_BTN_ELIMINAR = '//div[@class="dig-Menu-row-title"][text()="Delete"]'
 HTML_STEP_ELIMINAR_ARCHIVO_XPATH_BTN_ELIMINAR_MODAL = '//span[@class="dig-Button-content"][text()="Eliminar"]'
 HTML_STEP_ELIMINAR_ARCHIVO_XPATH_MSG_ELIMINACION_EXITOSA = '//span[@class="dig-Snackbar-message "][text()="Se ' \
                                                            'elimin\u00F3 1 elemento."]'
 
 # STEP CERRAR SESION DROPBOX
 HTML_STEP_CERRAR_SESION_CLASS_NAME_BTN_IMAGEN_PERFIL = 'dig-Avatar'
-HTML_STEP_CERRAR_SESION_XPATH_BTN_CERRAR_SESION = '//div[@class="dig-Menu-row-title"][text()="Salir"]'
+HTML_STEP_CERRAR_SESION_XPATH_BTN_CERRAR_SESION = '//div[@class="dig-Menu-row-title"][text()="Sign out"]'
 HTML_STEP_CERRAR_SESION_NAME_INPUT_LOGIN_EMAIL = 'login_email'
 HTML_STEP_CERRAR_SESION_NAME_INPUT_LOGIN_PASSWORD = 'login_password'
 
@@ -105,10 +114,11 @@ TIMEOUT_STEP_INICIO_SESION_DROP_BOX_PORTAL_PRINCIPAL = 48
 
 # STEP CARGA DE ARCHIVO EN PORTAL DROP BOX
 TIMEOUT_STEP_CARGA_ARCHIVO_VALIDACION_DE_CARGA = 20
-TIMEOUT_STEP_CARGA_ARCHIVO_VALIDACION_ELEMENTO_FOOTER = 5
+TIMEOUT_STEP_CARGA_ARCHIVO_VALIDACION_ELEMENTO_MAESTRO_CONTENT_PORTAL = 5
 TIMEOUT_STEP_CARGA_ARCHIVO_VALIDACION_BOTON_CARGA_DE_ARCHIVO = 5
 TIMEOUT_STEP_CARGA_ARCHIVO_VERIFICACION_CARGA_EXITOSA = 720
 TIMEOUT_STEP_CARGA_ARCHIVO_BOTON_CIERRE_PROGRESO_CARGA = 5
+TIMEOUT_STEP_CARGA_ARCHIVO_BTN_UPLOAD = 5
 
 # STEP DESCARGA DE ARCHIVO EN PORTAL DROP BOX
 TIMEOUT_STEP_DESCARGA_ARCHIVO_BARRA_BUSQUEDA = 20

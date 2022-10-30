@@ -5,4 +5,6 @@ services:
     image: dropbox_undetected_chrome:latest
     ports:
       - "7900:7900"
+    volumes:
+      - .:/app/
     shm_size: '2gb'

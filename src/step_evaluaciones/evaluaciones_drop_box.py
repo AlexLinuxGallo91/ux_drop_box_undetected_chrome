@@ -10,7 +10,6 @@ from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webdriver import WebDriver
-from selenium.webdriver.common.action_chains import ActionChains
 
 from src.step_evaluaciones import constantes_evaluaciones_claro_drive as const
 from src.utils.utils_evaluaciones import UtilsEvaluaciones
@@ -115,7 +114,7 @@ class EvaluacionesDropBoxDriveSteps:
 
             view_container = HtmlActions.webdriver_wait_presence_of_element_located(
                 webdriver_test_ux, const.TIMEOUT_STEP_INICIO_SESION_DROP_BOX_VIEW_CONTAINER,
-                id=const.HTML_STEP_INICIO_SESION_ID_VIEW_CONTAINER)
+                id=const.HTML_STEP_INICIO_SESION_ID_INITIAL_VIEW)
 
             input_email_gmail = HtmlActions.webdriver_wait_element_to_be_clickable(
                 view_container, const.TIMEOUT_STEP_INICIO_SESION_DROP_BOX_INPUT_EMAIL,
@@ -138,7 +137,8 @@ class EvaluacionesDropBoxDriveSteps:
 
             input_password_gmail.clear()
 
-            HtmlActions.enviar_data_keys(input_password_gmail, json_args['password'],
+            HtmlActions.enviar_data_keys(
+                input_password_gmail, json_args['password'],
                 name=const.HTML_STEP_INICIO_SESION_NAME_INPUT_PASSWORD_GMAIL)
 
             time.sleep(2)
@@ -199,18 +199,37 @@ class EvaluacionesDropBoxDriveSteps:
             # se ingresa a la pagina principal del portal
             webdriver_test_ux.get(const.HTML_STEP_CARGAR_ARCHIVO_URL_ROLE_PERSONAL)
 
-            ValidacionesHtml.cargar_archivo_en_portal_drop_box(
-                webdriver_test_ux, json_args['pathImage'], const.TIMEOUT_STEP_CARGA_ARCHIVO_VALIDACION_DE_CARGA)
+            maestro_content_portal = HtmlActions.webdriver_wait_presence_of_element_located(
+                webdriver_test_ux, const.TIMEOUT_STEP_CARGA_ARCHIVO_VALIDACION_ELEMENTO_MAESTRO_CONTENT_PORTAL,
+                id=const.HTML_STEP_CARGAR_ARCHIVO_ID_MAESTRO_CONTENT_PORTAL)
 
-            footer = HtmlActions.webdriver_wait_presence_of_element_located(
-                webdriver_test_ux, const.TIMEOUT_STEP_CARGA_ARCHIVO_VALIDACION_ELEMENTO_FOOTER,
-                class_name=const.HTML_STEP_CARGAR_ARCHIVO_CLASS_NAME_FOOTER)
+            div_botones_carga = HtmlActions.webdriver_wait_element_to_be_clickable(
+                maestro_content_portal, const.TIMEOUT_STEP_CARGA_ARCHIVO_VALIDACION_BOTON_CARGA_DE_ARCHIVO,
+                class_name='files-page-action-bar-container')
 
             btn_carga = HtmlActions.webdriver_wait_element_to_be_clickable(
-                footer, const.TIMEOUT_STEP_CARGA_ARCHIVO_VALIDACION_BOTON_CARGA_DE_ARCHIVO,
-                class_name=const.HTML_STEP_CARGAR_ARCHIVO_CLASS_NAME_BTN_CARGA)
+                div_botones_carga, const.TIMEOUT_STEP_CARGA_ARCHIVO_VALIDACION_BOTON_CARGA_DE_ARCHIVO,
+                class_name='rc-action-bar-top-level')
 
             HtmlActions.click_html_element(btn_carga, class_name=const.HTML_STEP_CARGAR_ARCHIVO_CLASS_NAME_BTN_CARGA)
+
+            btn_files = HtmlActions.webdriver_wait_element_to_be_clickable(
+                div_botones_carga, const.TIMEOUT_STEP_CARGA_ARCHIVO_VALIDACION_BOTON_CARGA_DE_ARCHIVO,
+                xpath=const.HTML_STEP_CARGAR_ARCHIVO_XPATH_BTN_FILES)
+
+            HtmlActions.click_html_element(btn_files, class_name=const.HTML_STEP_CARGAR_ARCHIVO_CLASS_NAME_BTN_CARGA)
+
+            ValidacionesHtml.establecer_carga_de_archivo(webdriver_test_ux, json_args['pathImage'])
+
+            div_modal_footer = HtmlActions.webdriver_wait_element_to_be_clickable(
+                webdriver_test_ux, const.TIMEOUT_STEP_CARGA_ARCHIVO_BTN_UPLOAD,
+                class_name=const.HTML_STEP_CARGAR_ARCHIVO_CLASS_NAME_BTN_UPLOAD)
+
+            btn_upload = HtmlActions.webdriver_wait_element_to_be_clickable(
+                div_modal_footer, const.TIMEOUT_STEP_CARGA_ARCHIVO_VALIDACION_BOTON_CARGA_DE_ARCHIVO,
+                class_name='dig-Button--primary')
+
+            btn_upload.click()
 
             ValidacionesHtml.verificar_mensaje_de_carga_exitosa_de_archivo(
                 webdriver_test_ux, nombre_archivo_con_ext, const.TIMEOUT_STEP_CARGA_ARCHIVO_VERIFICACION_CARGA_EXITOSA)
@@ -234,12 +253,11 @@ class EvaluacionesDropBoxDriveSteps:
             msg_output = const.MSG_OUTPUT_CARGA_ARCHIVO_SIN_EXITO.format(e.msg)
             json_eval = UtilsEvaluaciones.establecer_output_status_step(json_eval, 2, 0, False, msg_output)
 
-        json_eval = UtilsEvaluaciones.finalizar_tiempos_en_step(json_eval, 2, tiempo_step_inicio, fecha_inicio)
+            json_eval = UtilsEvaluaciones.finalizar_tiempos_en_step(json_eval, 2, tiempo_step_inicio, fecha_inicio)
 
         return json_eval
 
     def descargar_archivo_dropbox(self, webdriver_test_ux: WebDriver, json_eval, nombre_archivo_con_ext):
-
         extension_del_archivo = path.splitext(nombre_archivo_con_ext)[1]
         nombre_del_archivo_sin_extension = Path(nombre_archivo_con_ext).stem
 
@@ -338,22 +356,21 @@ class EvaluacionesDropBoxDriveSteps:
                 webdriver_test_ux, const.TIMEOUT_STEP_ELIMINACION_ARCHIVO_ELEM_ARCHIVO_POR_ELIMINAR,
                 xpath=const.HTML_STEP_ELIMINAR_ARCHIVO_XPATH_ARCHIVO_POR_ELIMINAR.format(nombre_archivo_con_ext))
 
-            btn_mas_acciones = HtmlActions.webdriver_wait_element_to_be_clickable(
-                archivo_por_eliminar, const.TIMEOUT_STEP_ELIMINACION_ARCHIVO_BOTON_MAS_ACCIONES,
-                xpath=const.HTML_STEP_ELIMINAR_ARCHIVO_XPATH_BTN_MAS_ACCIONES)
-
-            HtmlActions.click_html_element(
-                btn_mas_acciones, xpath=const.HTML_STEP_ELIMINAR_ARCHIVO_XPATH_BTN_MAS_ACCIONES)
-
             btn_eliminar = HtmlActions.webdriver_wait_element_to_be_clickable(
-                webdriver_test_ux, const.TIMEOUT_STEP_ELIMINACION_ARCHIVO_BOTON_ELIMINAR,
-                xpath=const.HTML_STEP_ELIMINAR_ARCHIVO_XPATH_BTN_ELIMINAR)
+                webdriver_test_ux, const.TIMEOUT_STEP_ELIMINACION_ARCHIVO_BOTON_MAS_ACCIONES,
+                class_name='action-bar-action-6')
 
-            HtmlActions.click_html_element(
-                btn_eliminar, xpath=const.HTML_STEP_ELIMINAR_ARCHIVO_XPATH_BTN_ELIMINAR)
+            HtmlActions.click_html_element(btn_eliminar, class_name='action-bar-action-6')
 
-            action = ActionChains(webdriver_test_ux)
-            action.send_keys(Keys.TAB).send_keys(Keys.TAB).send_keys(Keys.TAB).send_keys(Keys.ENTER).perform()
+            modal_eliminacion = HtmlActions.webdriver_wait_element_to_be_clickable(
+                webdriver_test_ux, const.TIMEOUT_STEP_ELIMINACION_ARCHIVO_BOTON_MAS_ACCIONES,
+                class_name='dig-Modal-footer')
+
+            btn_eliminar_modal = HtmlActions.webdriver_wait_element_to_be_clickable(
+                modal_eliminacion, const.TIMEOUT_STEP_ELIMINACION_ARCHIVO_BOTON_MAS_ACCIONES,
+                class_name='dig-Button--primary')
+
+            HtmlActions.click_html_element(btn_eliminar_modal, class_name='dig-Button--primary')
 
             ValidacionesHtml.validacion_eliminacion_fichero(webdriver_test_ux, 30)
 
