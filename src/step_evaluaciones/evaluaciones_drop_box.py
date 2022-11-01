@@ -288,7 +288,7 @@ class EvaluacionesDropBoxDriveSteps:
             msg_output = const.MSG_OUTPUT_CARGA_ARCHIVO_SIN_EXITO.format(e.msg)
             json_eval = UtilsEvaluaciones.establecer_output_status_step(json_eval, 2, 0, False, msg_output)
 
-            json_eval = UtilsEvaluaciones.finalizar_tiempos_en_step(json_eval, 2, tiempo_step_inicio, fecha_inicio)
+        json_eval = UtilsEvaluaciones.finalizar_tiempos_en_step(json_eval, 2, tiempo_step_inicio, fecha_inicio)
 
         return json_eval
 
