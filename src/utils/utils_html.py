@@ -134,9 +134,10 @@ class ValidacionesHtml():
             if len(list_modal_mensaje_upload) > 0:
                 modal = list_modal_mensaje_upload[0]
 
-                list_spans = modal.find_elements(By.XPATH, '//span[text()="1 upload complete"]')
+                list_spans_es = modal.find_elements(By.XPATH, '//span[text()="1 carga completada"]')
+                list_spans_en = modal.find_elements(By.XPATH, '//span[text()="1 upload complete"]')
 
-                if len(list_spans) > 0:
+                if len(list_spans_es) > 0 or len(list_spans_en) > 0:
                     break
 
             time.sleep(1)

@@ -92,7 +92,7 @@ class HtmlActions:
             selector_por_buscar = By.NAME
             elemento_html_por_localizar = name
         elif tag_name is not None:
-            selector_por_buscar = By.CLASS_NAME
+            selector_por_buscar = By.TAG_NAME
             elemento_html_por_localizar = tag_name
         elif class_name is not None:
             selector_por_buscar = By.CLASS_NAME

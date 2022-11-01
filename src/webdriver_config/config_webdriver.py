@@ -29,18 +29,27 @@ class ConfiguracionWebDriver:
         opciones_chrome.add_argument('window-size=1920x1080')
         opciones_chrome.add_argument('--no-sandbox')
         opciones_chrome.add_argument('--enable-sync')
+        opciones_chrome.add_argument('--disable-notifications')
+        opciones_chrome.add_argument("−−lang=en");
 
         # establece el modo headless, esto dependiendo de la opcion que se tenga en el archivo config.ini
         if modo_headless:
             opciones_chrome.add_argument("--headless")
 
         opciones_chrome.add_experimental_option('excludeSwitches', ['enable-logging'])
-        opciones_chrome.add_experimental_option('prefs', {'download.default_directory':
-            config_constantes.PATH_CARPETA_DESCARGA})
+        opciones_chrome.add_experimental_option(
+            'prefs', {
+                'download.default_directory': config_constantes.PATH_CARPETA_DESCARGA,
+                "credentials_enable_service": False,
+                "profile.password_manager_enabled": False
+            })
 
         prefs = {"profile.default_content_settings.popups": 0,
                  "download.default_directory": config_constantes.PATH_CARPETA_DESCARGA,
-                 "directory_upgrade": True}
+                 "directory_upgrade": True,
+                 "credentials_enable_service": False,
+                 "profile.password_manager_enabled": False
+                 }
 
         opciones_chrome.add_experimental_option("prefs", prefs)
 
